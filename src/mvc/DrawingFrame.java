@@ -24,6 +24,10 @@ public class DrawingFrame extends JFrame implements ActionListener {
 	public Point startPoint = null;
 
 	// Icons
+	ImageIcon iconToBack = new ImageIcon("src/resources/iconToBack.png");
+	ImageIcon iconToFront = new ImageIcon("src/resources/iconToFront.png");
+	ImageIcon iconBringBack = new ImageIcon("src/resources/iconBringBack.png");
+	ImageIcon iconBringFront = new ImageIcon("src/resources/iconBringFront.png");
 	ImageIcon iconUndo = new ImageIcon("src/resources/iconUndo.png");
 	ImageIcon iconRedo = new ImageIcon("src/resources/iconRedo.png");
 	ImageIcon iconSelect = new ImageIcon("src/resources/iconSelect.png");
@@ -45,6 +49,10 @@ public class DrawingFrame extends JFrame implements ActionListener {
 	private final JToggleButton btnSelect = new JToggleButton();
 	private final JButton btnModify = new JButton();
 	private final JButton btnDelete = new JButton();
+	private final JButton btnToBack = new JButton();
+	private final JButton btnToFront = new JButton();
+	private final JButton btnBringBack = new JButton();
+	private final JButton btnBringFront = new JButton();
 	private final JToggleButton btnPoint = new JToggleButton();
 	private final JToggleButton btnLine = new JToggleButton();
 	private final JToggleButton btnRectangle = new JToggleButton();
@@ -61,6 +69,10 @@ public class DrawingFrame extends JFrame implements ActionListener {
 	public DrawingFrame() {
 
 		// Setting icons
+		setupIconBtn(btnToBack, iconToBack, 50, 50);
+		setupIconBtn(btnToFront, iconToFront, 50, 50);
+		setupIconBtn(btnBringBack, iconBringBack, 50, 50);
+		setupIconBtn(btnBringFront, iconBringFront, 50, 50);
 		setupIconBtn(btnUndo, iconUndo, 50, 50);
 		setupIconBtn(btnRedo, iconRedo, 50, 50);
 		setupIconBtn(btnModify, iconModify, 50, 50);
@@ -78,7 +90,6 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		topPanel.setLayout(new FlowLayout()); // Even though it is by default
 		rightPanel.setLayout(new GridLayout(0, 1, 3, 3));
 		view = new DrawingView();
-		// view.setBackground(Color.BLACK);
 
 		// Panel size
 		view.setPreferredSize(new Dimension(800, 600));
@@ -96,6 +107,22 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		// Adding btnDelete
 		tools.add(btnDelete);
 		topPanel.add(btnDelete);
+
+		// Adding btnToBack
+		tools.add(btnToBack);
+		topPanel.add(btnToBack);
+
+		// Adding btnToFront
+		tools.add(btnToFront);
+		topPanel.add(btnToFront);
+
+		// Adding btnBringBack
+		tools.add(btnBringBack);
+		topPanel.add(btnBringBack);
+
+		// Adding btnBringFront
+		tools.add(btnBringFront);
+		topPanel.add(btnBringFront);
 
 		// Adding btnPoint
 		tools.add(btnPoint);
@@ -133,11 +160,17 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		colors.add(btnOuterColor);
 		rightPanel.add(btnInnerColor);
 		rightPanel.add(btnOuterColor);
-		
+
 		// Button Delete and Modify disabled (nothing selected yet)
 		btnModify.setEnabled(false);
 		btnDelete.setEnabled(false);
 		
+		// Setting disabled
+		btnBringBack.setEnabled(false);
+		btnBringFront.setEnabled(false);
+		btnToBack.setEnabled(false);
+		btnToFront.setEnabled(false);
+
 		// Button Undo and Redo set to disabled
 		btnUndo.setEnabled(false);
 		btnRedo.setEnabled(false);
@@ -193,14 +226,14 @@ public class DrawingFrame extends JFrame implements ActionListener {
 	public JToggleButton getBtnHex() {
 		return btnHex;
 	}
-	
+
 	private void setupIconBtn(JButton btn, ImageIcon icon, int width, int height) {
 		Image img = icon.getImage();
 		Image newImg = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
 		icon = new ImageIcon(newImg);
 		btn.setIcon(icon);
 	}
-	
+
 	private void setupIconTgl(JToggleButton btn, ImageIcon icon, int width, int height) {
 		Image img = icon.getImage();
 		Image newImg = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
@@ -231,16 +264,41 @@ public class DrawingFrame extends JFrame implements ActionListener {
 				controller.actionPerformed(e);
 			}
 		});
-		
+
 		// Button Undo
 		btnUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.actionPerformed(e);
 			}
 		});
-		
+
 		// Button Redo
 		btnRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.actionPerformed(e);
+			}
+		});
+
+		// Button ToBack
+		btnToBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.actionPerformed(e);
+			}
+		});
+		// Button ToFront
+		btnToFront.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.actionPerformed(e);
+			}
+		});
+		// Button BringBack
+		btnBringBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.actionPerformed(e);
+			}
+		});
+		// Button BringFront
+		btnBringFront.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.actionPerformed(e);
 			}
@@ -289,6 +347,22 @@ public class DrawingFrame extends JFrame implements ActionListener {
 
 	public void setLogArea(TextArea logArea) {
 		this.logArea = logArea;
+	}
+
+	public JButton getBtnToBack() {
+		return btnToBack;
+	}
+
+	public JButton getBtnToFront() {
+		return btnToFront;
+	}
+
+	public JButton getBtnBringBack() {
+		return btnBringBack;
+	}
+
+	public JButton getBtnBringFront() {
+		return btnBringFront;
 	}
 
 }

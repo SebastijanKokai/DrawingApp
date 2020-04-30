@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import geometry.Shape;
+import mvc.DrawingController;
+import mvc.DrawingFrame;
 
 public class SelectedObjects {
 
@@ -32,5 +34,6 @@ public class SelectedObjects {
 	public int size() {
 		return selectedObjects.size();
 	}
+	
 
 }

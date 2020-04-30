@@ -9,11 +9,12 @@ public class CommandRemove  implements Command {
 	private DrawingModel model;
 	private Shape shape;
 	private String nameString;
+	private int index;
 	
-	public CommandRemove(DrawingModel model, Shape shape, String nameString) {
+	public CommandRemove(DrawingModel model, Shape shape, int index) {
 		this.model = model;
 		this.shape = shape;
-		this.nameString = nameString;
+		this.index = index;
 	}
 
 	@Override
@@ -23,7 +24,7 @@ public class CommandRemove  implements Command {
 
 	@Override
 	public void unexecute() {
-		model.add(shape);
+		model.getShapes().add(index, shape);
 	}
 
 	@Override

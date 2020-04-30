@@ -16,6 +16,8 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.JOptionPane;
 
 import command.CommandManager;
+import command.commands.BringBack;
+import command.commands.BringFront;
 import command.commands.CircleModify;
 import command.commands.CommandAdd;
 import command.commands.CommandRemove;
@@ -24,6 +26,8 @@ import command.commands.HexModify;
 import command.commands.LineModify;
 import command.commands.PointModify;
 import command.commands.RectangleModify;
+import command.commands.ToBack;
+import command.commands.ToFront;
 import dialogs.DlgCircle;
 import dialogs.DlgDonut;
 import dialogs.DlgHexagon;
@@ -100,14 +104,12 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 						selectedObjects.remove(shape);
 
 						check(selectedObjects.size());
-						System.out.println(selectedObjects.size());
 
 					} else if (shape.contains(x, y)) {
 						shape.setSelected(true);
 						selectedObjects.add(shape);
 
 						check(selectedObjects.size());
-						System.out.println(selectedObjects.size());
 					}
 
 				}
@@ -125,7 +127,7 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 					CommandAdd cmd = new CommandAdd(model, point, "Point" + pointerCount++);
 					commandManager.execute(cmd);
 					commandManager.clearReverse();
-				//	frame.getLogArea().setText(logger.get);
+					// frame.getLogArea().setText(logger.get);
 					frame.getBtnUndo().setEnabled(true);
 					frame.getBtnRedo().setEnabled(false);
 				}
@@ -247,8 +249,12 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 
 					Shape shape = it.next();
 					if (shape.isSelected()) {
-						CommandRemove cmdRemove = new CommandRemove(model, shape, "");
+						int index = model.getShapes().indexOf(shape);
+						CommandRemove cmdRemove = new CommandRemove(model, shape, index);
 						commandManager.execute(cmdRemove);
+						
+						frame.getBtnUndo().setEnabled(true);
+						frame.getBtnRedo().setEnabled(false);
 					}
 
 					check(selectedObjects.size());
@@ -274,6 +280,9 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 							point.setSelected(true);
 							PointModify pointModify = new PointModify(p, point);
 							commandManager.execute(pointModify);
+							
+							frame.getBtnUndo().setEnabled(true);
+							frame.getBtnRedo().setEnabled(false);
 						}
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -288,6 +297,9 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 							line.setSelected(true);
 							LineModify lineModify = new LineModify(l, line);
 							commandManager.execute(lineModify);
+							
+							frame.getBtnUndo().setEnabled(true);
+							frame.getBtnRedo().setEnabled(false);
 						}
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -302,6 +314,9 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 							rect.setSelected(true);
 							RectangleModify rectangleModify = new RectangleModify(r, rect);
 							commandManager.execute(rectangleModify);
+							
+							frame.getBtnUndo().setEnabled(true);
+							frame.getBtnRedo().setEnabled(false);
 						}
 
 					} catch (Exception ex) {
@@ -317,6 +332,9 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 							circle.setSelected(true);
 							CircleModify circleModify = new CircleModify(c, circle);
 							commandManager.execute(circleModify);
+							
+							frame.getBtnUndo().setEnabled(true);
+							frame.getBtnRedo().setEnabled(false);
 						}
 
 					} catch (Exception ex) {
@@ -332,6 +350,9 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 							donut.setSelected(true);
 							DonutModify donutModify = new DonutModify(d, donut);
 							commandManager.execute(donutModify);
+							
+							frame.getBtnUndo().setEnabled(true);
+							frame.getBtnRedo().setEnabled(false);
 						}
 
 					} catch (Exception ex) {
@@ -347,6 +368,9 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 							hex.setSelected(true);
 							HexModify hexModify = new HexModify(h, hex);
 							commandManager.execute(hexModify);
+							
+							frame.getBtnUndo().setEnabled(true);
+							frame.getBtnRedo().setEnabled(false);
 						}
 
 					} catch (Exception ex) {
@@ -381,6 +405,63 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 			else
 				frame.getBtnRedo().setEnabled(true);
 			frame.getView().repaint();
+		}
+		// ToBack
+		else if (e.getSource() == frame.getBtnToBack()) {
+			if (selectedObjects.size() == 1) {
+				Shape shape = selectedObjects.get(0);
+				int index = model.getShapes().indexOf(shape);
+				ToBack cmd = new ToBack(model, shape, index);
+				commandManager.execute(cmd);
+				
+				frame.getBtnUndo().setEnabled(true);
+				frame.getBtnRedo().setEnabled(false);
+				frame.getView().repaint();
+			}
+		}
+		// ToFront
+		else if (e.getSource() == frame.getBtnToFront()) {
+			if (selectedObjects.size() == 1) {
+				
+				Shape shape = selectedObjects.get(0);
+				int index = model.getShapes().indexOf(shape);
+				
+				ToFront cmd = new ToFront(model, shape, index);
+				commandManager.execute(cmd);
+
+				frame.getBtnUndo().setEnabled(true);
+				frame.getBtnRedo().setEnabled(false);
+				frame.getView().repaint();
+
+			}
+		}
+		// BringBack
+		else if (e.getSource() == frame.getBtnBringBack()) {
+			if (selectedObjects.size() == 1) {
+				Shape shape = selectedObjects.get(0);
+				int index = model.getShapes().indexOf(shape);
+				BringBack cmd = new BringBack(model, shape, index);
+				commandManager.execute(cmd);
+				
+				frame.getBtnUndo().setEnabled(true);
+				frame.getBtnRedo().setEnabled(false);
+				frame.getView().repaint();
+			}
+		}
+		// BringFront
+		else if (e.getSource() == frame.getBtnBringFront()) {
+			if (selectedObjects.size() == 1) {
+				Shape shape = selectedObjects.get(0);
+				int index = model.getShapes().indexOf(shape);
+				int length = model.getShapes().size();
+				BringFront cmd = new BringFront(model, shape, index, length);
+				commandManager.execute(cmd);
+				
+				frame.getBtnUndo().setEnabled(true);
+				frame.getBtnRedo().setEnabled(false);
+				frame.getView().repaint();
+
+			}
 		}
 
 	}
@@ -535,24 +616,41 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 
 	private void check(int size) {
 		if (size > 0) {
-			if (size == 1)
+			if (size == 1) {
 				frame.getBtnModify().setEnabled(true);
-			else
+				frame.getBtnBringBack().setEnabled(true);
+				frame.getBtnBringFront().setEnabled(true);
+				frame.getBtnToBack().setEnabled(true);
+				frame.getBtnToFront().setEnabled(true);
+			}
+			else {
 				frame.getBtnModify().setEnabled(false);
+				frame.getBtnBringBack().setEnabled(false);
+				frame.getBtnBringFront().setEnabled(false);
+				frame.getBtnToBack().setEnabled(false);
+				frame.getBtnToFront().setEnabled(false);
+			}
 
 			frame.getBtnDelete().setEnabled(true);
 		} else {
 			frame.getBtnDelete().setEnabled(false);
 			frame.getBtnModify().setEnabled(false);
+			frame.getBtnBringBack().setEnabled(false);
+			frame.getBtnBringFront().setEnabled(false);
+			frame.getBtnToBack().setEnabled(false);
+			frame.getBtnToFront().setEnabled(false);
 		}
 	}
 
 }
 
 // TODO
+// When I modify an object it gets re-created, so the Z position changes
+// When I delete an object with undo, buttons modify,delete need to be disabled
+// I should log with cmdHistory -- then I should create objects for every
 // Undo and Redo -- delete has bug
 // Logging onto textarea
 // Saving logs into txt file
 // Importing from txt file commands (all at once and 1 by 1)
-// When I modify an object it gets re-created, so the Z position changes
+
 // If I click while selected is on, on non shape value, false all selections
