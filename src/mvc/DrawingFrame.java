@@ -3,10 +3,12 @@ package mvc;
 import geometry.Point;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.*;
-
-import javax.swing.ImageIcon;
+import java.io.File;
+import java.io.IOException;
 
 public class DrawingFrame extends JFrame implements ActionListener {
 
@@ -39,6 +41,7 @@ public class DrawingFrame extends JFrame implements ActionListener {
 	ImageIcon iconCircle = new ImageIcon("src/resources/iconCircle.png");
 	ImageIcon iconDonut = new ImageIcon("src/resources/iconDonut.png");
 	ImageIcon iconHexagon = new ImageIcon("src/resources/iconHexagon.png");
+	ImageIcon iconNext = new ImageIcon("src/resources/iconNext.png");
 
 	// Panels
 	private final JPanel leftPanel = new JPanel();
@@ -61,14 +64,26 @@ public class DrawingFrame extends JFrame implements ActionListener {
 	private final JToggleButton btnHex = new JToggleButton();
 	private JButton btnUndo = new JButton();
 	private JButton btnRedo = new JButton();
-	private final JButton btnInnerColor = new JButton("Inner Color");
-	private final JButton btnOuterColor = new JButton("Outer Color");
-	private TextArea logArea = new TextArea();
+	private final JButton btnInnerColor = new JButton("InnerColor");
+	private final JButton btnOuterColor = new JButton("OuterColor");
+	private final JTextArea logArea = new JTextArea();
 	private final JScrollPane scrollPane = new JScrollPane(logArea);
+	private final JButton btnNext = new JButton();
+	private final JMenuBar menuBar = new JMenuBar();
+	private final JMenu menuFile = new JMenu("File");
+	private final JMenuItem openItem = new JMenuItem("Open");
+	private final JMenuItem saveItem = new JMenuItem("Save");
 
 	public DrawingFrame() {
 
+		// Menu
+		menuFile.add(openItem);
+		menuFile.add(saveItem);
+		menuBar.add(menuFile);
+		setJMenuBar(menuBar);
+
 		// Setting icons
+		setupIconBtn(btnNext, iconNext, 50, 50);
 		setupIconBtn(btnToBack, iconToBack, 50, 50);
 		setupIconBtn(btnToFront, iconToFront, 50, 50);
 		setupIconBtn(btnBringBack, iconBringBack, 50, 50);
@@ -94,7 +109,12 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		// Panel size
 		view.setPreferredSize(new Dimension(800, 600));
 		leftPanel.setPreferredSize(new Dimension(110, 200));
-		rightPanel.setPreferredSize(new Dimension(110, 200));
+		rightPanel.setPreferredSize(new Dimension(120, 200));
+
+		// Adding btnNext
+		btnNext.setEnabled(false);
+		tools.add(btnNext);
+		topPanel.add(btnNext);
 
 		// Adding btnSelect
 		tools.add(btnSelect);
@@ -164,7 +184,7 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		// Button Delete and Modify disabled (nothing selected yet)
 		btnModify.setEnabled(false);
 		btnDelete.setEnabled(false);
-		
+
 		// Setting disabled
 		btnBringBack.setEnabled(false);
 		btnBringFront.setEnabled(false);
@@ -174,6 +194,10 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		// Button Undo and Redo set to disabled
 		btnUndo.setEnabled(false);
 		btnRedo.setEnabled(false);
+
+		// logArea
+		scrollPane.setPreferredSize(new Dimension(0, 150));
+		logArea.setEnabled(false);
 
 		// Setting listeners
 		setupListeners();
@@ -307,14 +331,111 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		btnOuterColor.addActionListener(this);
 		btnInnerColor.addActionListener(this);
 
+		// Save
+		saveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser c = new JFileChooser();
+				FileNameExtensionFilter f = new FileNameExtensionFilter("Bin", "bin");
+				c.setFileFilter(f);
+
+				int userSelection = c.showSaveDialog(null);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToSave = c.getSelectedFile();
+					File fileToSaveLog;
+					String filePath = fileToSave.getAbsolutePath();
+					if (!filePath.endsWith(".bin") && !filePath.contains(".")) {
+						fileToSave = new File(filePath + ".bin");
+						fileToSaveLog = new File(filePath + ".txt");
+
+					}
+
+					String filename = fileToSave.getPath();
+
+					System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+					System.out.println(filename.substring(filename.lastIndexOf("."), filename.length()));
+					if (filename.substring(filename.lastIndexOf("."), filename.length()).contentEquals(".bin")) {
+						try {
+							filename = fileToSave.getAbsolutePath().substring(0, filename.lastIndexOf(".")) + ".txt";
+							System.out.println(filename);
+							fileToSaveLog = new File(filename);
+							controller.save(fileToSave, fileToSaveLog);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Niste uneli odgovarajuci fajl");
+
+					}
+				}
+
+			}
+		});
+
+		// Open
+		openItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser c = new JFileChooser();
+				FileNameExtensionFilter f = new FileNameExtensionFilter("bin", "bin", "txt");
+
+				c.setFileFilter(f);
+
+				c.setDialogTitle("Open");
+				int userSelection = c.showOpenDialog(null);
+
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToLoad = c.getSelectedFile();
+					String filename = fileToLoad.getPath();
+					if (filename.substring(filename.lastIndexOf("."), filename.length()).contentEquals(".bin")) {
+						try {
+							controller.load(fileToLoad);
+						} catch (IOException m) {
+							m.printStackTrace();
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+
+					} else if (filename.substring(filename.lastIndexOf("."), filename.length()).contentEquals(".txt")) {
+
+						try {
+							
+							controller.loadOneByOne(fileToLoad);
+
+						} catch (IOException m) { // TODO Auto-generated catch block
+							m.printStackTrace();
+						}
+
+					} else {
+
+						JOptionPane.showMessageDialog(null, "The file is not valid");
+
+					}
+				}
+
+			}
+		});
+
+		btnNext.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					controller.loadNext();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() == "Inner Color") {
+		if (e.getActionCommand() == "InnerColor") {
 			innerColor = JColorChooser.showDialog(this, "Choose your inner color", Color.RED);
 			btnInnerColor.setBackground(innerColor);
-		} else if (e.getActionCommand() == "Outer Color") {
+		} else if (e.getActionCommand() == "OuterColor") {
 			outerColor = JColorChooser.showDialog(this, "Choose your outer color", Color.RED);
 			btnOuterColor.setBackground(outerColor);
 		}
@@ -341,12 +462,8 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		this.btnRedo = btnRedo;
 	}
 
-	public TextArea getLogArea() {
+	public JTextArea getLogArea() {
 		return logArea;
-	}
-
-	public void setLogArea(TextArea logArea) {
-		this.logArea = logArea;
 	}
 
 	public JButton getBtnToBack() {
@@ -363,6 +480,10 @@ public class DrawingFrame extends JFrame implements ActionListener {
 
 	public JButton getBtnBringFront() {
 		return btnBringFront;
+	}
+
+	public JButton getBtnNext() {
+		return btnNext;
 	}
 
 }

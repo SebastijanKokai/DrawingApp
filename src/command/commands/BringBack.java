@@ -10,11 +10,13 @@ public class BringBack implements Command {
 	DrawingModel model;
 	int index;
 	int indexSave;
+	String nameString;
 
-	public BringBack(DrawingModel model, Shape shape, int index) {
+	public BringBack(DrawingModel model, Shape shape, int index, String nameString) {
 		this.model = model;
 		this.shape = shape;
 		this.index = index;
+		this.nameString = nameString;
 	}
 
 	@Override
@@ -34,7 +36,6 @@ public class BringBack implements Command {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return nameString;
 	}
 }

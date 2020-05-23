@@ -112,7 +112,9 @@ public class Point extends Shape {
 	}
 
 	public String toString() {
-		return "(" + x + "," + y + ")";
+		String x = String.valueOf(getX());
+		String y = String.valueOf(getY());
+		return "x," + x + ",y," + y;
 	}
 
 

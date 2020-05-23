@@ -122,7 +122,7 @@ public class Donut extends Circle {
 	}
 
 	public String toString() {
-		return super.toString() + ", inner radius=" + innerRadius;
+		return super.toString() + ",innerRadius," + innerRadius;
 	}
 
 }

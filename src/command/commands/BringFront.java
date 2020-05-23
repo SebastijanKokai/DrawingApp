@@ -11,12 +11,14 @@ public class BringFront implements Command {
 	int index;
 	int length;
 	int indexSave;
+	String nameString;
 
-	public BringFront(DrawingModel model, Shape shape, int index, int length) {
+	public BringFront(DrawingModel model, Shape shape, int index, int length, String nameString) {
 		this.model = model;
 		this.shape = shape;
 		this.index = index;
 		this.length = length;
+		this.nameString = nameString;
 	}
 
 	@Override
@@ -36,8 +38,7 @@ public class BringFront implements Command {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return nameString;
 	}
 
 }

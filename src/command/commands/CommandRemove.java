@@ -10,11 +10,13 @@ public class CommandRemove  implements Command {
 	private Shape shape;
 	private String nameString;
 	private int index;
+	private boolean selected;
 	
-	public CommandRemove(DrawingModel model, Shape shape, int index) {
+	public CommandRemove(DrawingModel model, Shape shape, int index, String nameString) {
 		this.model = model;
 		this.shape = shape;
 		this.index = index;
+		this.nameString = nameString;
 	}
 
 	@Override

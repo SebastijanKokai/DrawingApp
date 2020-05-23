@@ -138,7 +138,8 @@ public class Circle extends Shape {
 	}
 
 	public String toString() {
-		return "Center=" + center + ", radius=" + radius;
+		return center.toString() + ",radius," + radius
+				+ ",outerColor," + String.valueOf(outerColor.getRGB()) + ",innerColor," + String.valueOf(innerColor.getRGB());
 	}
 
 }

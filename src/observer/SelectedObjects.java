@@ -9,7 +9,7 @@ import mvc.DrawingFrame;
 
 public class SelectedObjects {
 
-	private List<Shape> selectedObjects;
+	private ArrayList<Shape> selectedObjects;
 	
 	public SelectedObjects() {
 		selectedObjects = new ArrayList<Shape>();
@@ -33,6 +33,10 @@ public class SelectedObjects {
 	
 	public int size() {
 		return selectedObjects.size();
+	}
+	
+	public void clear() {
+		selectedObjects.clear();
 	}
 	
 

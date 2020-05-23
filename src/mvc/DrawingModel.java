@@ -9,9 +9,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DrawingModel {
 	
-	private List<Shape> shapes = new CopyOnWriteArrayList<Shape>(); // because of multithreading
+	private ArrayList<Shape> shapes = new ArrayList<Shape>(); // because of multithreading
 
-    public List<Shape> getShapes() {
+    public ArrayList<Shape> getShapes() {
         return shapes;
     }
 

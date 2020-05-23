@@ -155,7 +155,10 @@ public class Rectangle extends Shape {
 	}
 
 	public String toString() {
-		return "Upper left point=" + upperLeftPoint + ", height=" + height + ", width=" + width;
+
+		
+		return upperLeftPoint.toString() + ",height," + height + ",width," + width
+				+ ",outerColor," + String.valueOf(outerColor.getRGB()) + ",innerColor," + String.valueOf(innerColor.getRGB());
 	}
 
 }

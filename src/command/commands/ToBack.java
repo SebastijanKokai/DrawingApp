@@ -9,11 +9,13 @@ public class ToBack implements Command {
 	Shape shape;
 	DrawingModel model;
 	int index;
+	String nameString;
 
-	public ToBack(DrawingModel model, Shape shape, int index) {
+	public ToBack(DrawingModel model, Shape shape, int index, String nameString) {
 		this.model = model;
 		this.shape = shape;
 		this.index = index;
+		this.nameString = nameString;
 	}
 
 	@Override
@@ -34,8 +36,7 @@ public class ToBack implements Command {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return nameString;
 	}
 
 }

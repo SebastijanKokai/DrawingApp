@@ -5,6 +5,10 @@ import java.awt.Graphics;
 
 public class Line extends Shape {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8395868283026085837L;
 	private Point startPoint = new Point();
 	private Point endPoint = new Point();
 	private Color color;
@@ -117,7 +121,14 @@ public class Line extends Shape {
 	}
 
 	public String toString() {
-		return startPoint + "-->" + endPoint;
+		String x1 = String.valueOf(startPoint.getX());
+		String y1 = String.valueOf(startPoint.getY());
+		String x2 = String.valueOf(endPoint.getX());
+		String y2 = String.valueOf(endPoint.getY());
+		String colorString = String.valueOf(color.getRGB());
+		return "x1," + x1 + ",y1," + y1 +
+		",x2," + x2 + ",y2," + y2 + ",color," + colorString;
 	}
+
 
 }

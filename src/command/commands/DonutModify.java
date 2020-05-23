@@ -31,9 +31,6 @@ public class DonutModify implements Command {
 		original.getCenter().setX(oldState.getCenter().getX());
 		original.getCenter().setY(oldState.getCenter().getY());
 		
-		System.out.println(original.toString());
-		
-		
 		oldState.setInnerColor(newState.getInnerColor());
 		oldState.setOuterColor(newState.getOuterColor());
 		try {
@@ -44,9 +41,6 @@ public class DonutModify implements Command {
 		}
 		oldState.getCenter().setX(newState.getCenter().getX());
 		oldState.getCenter().setY(newState.getCenter().getY());
-		
-		System.out.println(oldState.toString());
-
 	}
 
 	@Override
