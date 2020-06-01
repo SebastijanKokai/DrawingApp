@@ -7,10 +7,10 @@ import java.io.IOException;
 
 import mvc.DrawingFrame;
 
-public class SaveLog implements SaveStrategy{
+public class SaveLog implements SaveStrategy {
 
 	@Override
-	public void save(Object o,File fileToSaveLog) {
+	public void save(Object o, File fileToSaveLog) {
 		DrawingFrame frame = (DrawingFrame)o;
 		BufferedWriter bf = null;
 		try {
@@ -18,7 +18,6 @@ public class SaveLog implements SaveStrategy{
 			frame.getLogArea().write(bf);
 			bf.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

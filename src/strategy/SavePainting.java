@@ -18,7 +18,6 @@ public class SavePainting implements SaveStrategy {
 			ous.writeObject(model.getShapes());
 			ous.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

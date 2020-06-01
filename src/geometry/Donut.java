@@ -28,31 +28,66 @@ public class Donut extends Circle {
 	}
 
 	public void draw(Graphics g) {
+		/*
+		 * if (getInnerColor() != null) { g.setColor(getInnerColor());
+		 * g.fillOval(this.getCenter().getX() - this.getRadius(),
+		 * this.getCenter().getY() - this.getRadius(), this.getRadius() * 2,
+		 * this.getRadius() * 2); }
+		 */
+		//super.draw(g);
+		
+		Color color = new Color (255.0f / 255.0f, 255.0f / 255.0f, 221.0f / 255.0f, 0.0f); 
+		g.setColor(color);
+		g.fillOval(this.getCenter().getX() - this.getInnerRadius(), this.getCenter().getY() - this.getInnerRadius(),
+				this.getInnerRadius() * 2, this.getInnerRadius() * 2);
 		
 		
-		Ellipse2D outer = new Ellipse2D.Double(
-				getCenter().getX() - getRadius(),
-				getCenter().getY() - getRadius(),
-				getRadius()*2, 
-				getRadius()*2);
-		Ellipse2D inner = new Ellipse2D.Double(
-				getCenter().getX() - getInnerRadius(),
-				getCenter().getY() - getInnerRadius(),
-				getInnerRadius()*2,
-				getInnerRadius()*2);
+		if (getInnerColor() != null) {
+			g.setColor(getInnerColor());
+			for(int i = getInnerRadius(); i < getRadius(); i++) {
+				g.drawOval(this.getCenter().getX() - i,
+						  this.getCenter().getY() - i, i * 2,
+						  i * 2);		
+			}	
+		}
+		
+		
+		if (getOuterColor() != null)
+			g.setColor(getOuterColor());
+		g.drawOval(this.getCenter().getX() - this.getRadius(), this.getCenter().getY() - this.getRadius(),
+				this.getRadius() * 2, this.getRadius() * 2);
+		g.drawOval(this.getCenter().getX() - this.getInnerRadius(), this.getCenter().getY() - this.getInnerRadius(),
+				this.getInnerRadius() * 2, this.getInnerRadius() * 2);
+	
 
-		area = new Area(outer);
-		area.subtract(new Area(inner));
+		
 
-		Graphics2D gr = (Graphics2D)g;
 		
-		if(getInnerColor() != null)
-			gr.setColor(getInnerColor());
-		gr.fill(area);
+		/*
+		 * g.drawOval(this.getCenter().getX() - this.getInnerRadius(),
+		 * this.getCenter().getY() - this.getInnerRadius(), this.getInnerRadius() * 2,
+		 * this.getInnerRadius() * 2);
+		 */
+		 
+
+		g.setColor(new Color(0, 0, 0));
+
 		
-		if(getOuterColor() != null)
-			gr.setColor(getOuterColor());
-		gr.draw(area);
+		/*
+		 * Ellipse2D outer = new Ellipse2D.Double( getCenter().getX() - getRadius(),
+		 * getCenter().getY() - getRadius(), getRadius()*2, getRadius()*2); Ellipse2D
+		 * inner = new Ellipse2D.Double( getCenter().getX() - getInnerRadius(),
+		 * getCenter().getY() - getInnerRadius(), getInnerRadius()*2,
+		 * getInnerRadius()*2);
+		 * 
+		 * area = new Area(outer); area.subtract(new Area(inner));
+		 * 
+		 * Graphics2D gr = (Graphics2D)g;
+		 * 
+		 * if(getInnerColor() != null) gr.setColor(getInnerColor()); gr.fill(area);
+		 * 
+		 * if(getOuterColor() != null) gr.setColor(getOuterColor()); gr.draw(area);
+		 */
 		
 		
 		if (isSelected()) {
@@ -81,7 +116,10 @@ public class Donut extends Circle {
 	}
 
 	public boolean contains(int x, int y) {
-		return area.contains(x, y); // Changed this line because of inner radius transparency
+		double dFromCenter = this.getCenter().distance(x, y);
+		return super.contains(x, y) && dFromCenter > innerRadius;
+
+		//return area.contains(x, y); // Changed this line because of inner radius transparency
 	}
 
 	public boolean contains(Point p) {

@@ -43,12 +43,12 @@ public class Point extends Shape {
 	@Override
 	public void draw(Graphics g) {
 		g.setColor(color);
-		g.drawLine(this.x - 2, y, this.x + 2, y);
-		g.drawLine(x, this.y - 2, x, this.y + 2);
+		g.drawLine(this.x - 10, y, this.x + 10, y);
+		g.drawLine(x, this.y - 10, x, this.y + 10);
 		g.setColor(new Color(0, 0, 0));
 		if (isSelected()) {
 			g.setColor(Color.BLUE);
-			g.drawRect(this.getX() - 3, this.y - 3, 6, 6);
+			g.drawRect(this.getX() - 10, this.y - 10, 20, 20);
 			g.setColor(Color.BLACK);
 		}
 	}
@@ -70,7 +70,7 @@ public class Point extends Shape {
 	}
 
 	public boolean contains(int x, int y) {
-		if (this.distance(x, y) <= 3)
+		if (this.distance(x, y) <= 10)
 			return true;
 		return false;
 	}

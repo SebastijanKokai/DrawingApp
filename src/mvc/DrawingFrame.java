@@ -164,7 +164,7 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		tools.add(btnDonut);
 		leftPanel.add(btnDonut);
 
-		// Adding btnDonut
+		// Adding btnHex
 		tools.add(btnHex);
 		leftPanel.add(btnHex);
 
@@ -334,25 +334,25 @@ public class DrawingFrame extends JFrame implements ActionListener {
 		// Save
 		saveItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				JFileChooser c = new JFileChooser();
 				FileNameExtensionFilter f = new FileNameExtensionFilter("Bin", "bin");
 				c.setFileFilter(f);
 
 				int userSelection = c.showSaveDialog(null);
+
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					File fileToSave = c.getSelectedFile();
 					File fileToSaveLog;
 					String filePath = fileToSave.getAbsolutePath();
+					
 					if (!filePath.endsWith(".bin") && !filePath.contains(".")) {
 						fileToSave = new File(filePath + ".bin");
 						fileToSaveLog = new File(filePath + ".txt");
-
 					}
 
 					String filename = fileToSave.getPath();
 
-					System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-					System.out.println(filename.substring(filename.lastIndexOf("."), filename.length()));
 					if (filename.substring(filename.lastIndexOf("."), filename.length()).contentEquals(".bin")) {
 						try {
 							filename = fileToSave.getAbsolutePath().substring(0, filename.lastIndexOf(".")) + ".txt";
@@ -360,13 +360,11 @@ public class DrawingFrame extends JFrame implements ActionListener {
 							fileToSaveLog = new File(filename);
 							controller.save(fileToSave, fileToSaveLog);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
 					} else {
-						JOptionPane.showMessageDialog(null, "Niste uneli odgovarajuci fajl");
-
+						JOptionPane.showMessageDialog(null, "File is not valid");
 					}
 				}
 
@@ -399,7 +397,7 @@ public class DrawingFrame extends JFrame implements ActionListener {
 					} else if (filename.substring(filename.lastIndexOf("."), filename.length()).contentEquals(".txt")) {
 
 						try {
-							
+
 							controller.loadOneByOne(fileToLoad);
 
 						} catch (IOException m) { // TODO Auto-generated catch block
@@ -485,5 +483,4 @@ public class DrawingFrame extends JFrame implements ActionListener {
 	public JButton getBtnNext() {
 		return btnNext;
 	}
-
 }

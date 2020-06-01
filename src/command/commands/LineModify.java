@@ -2,16 +2,26 @@ package command.commands;
 
 import command.Command;
 import geometry.Line;
+import mvc.DrawingModel;
+import observer.SelectedObjects;
 
 public class LineModify implements Command {
 
 	private Line oldState;
 	private Line newState;
 	private Line original = new Line();
+	private DrawingModel model;
+	private int index;
+	private String nameString;
+	private SelectedObjects selectedObjects;
 	
-	public LineModify(Line oldState, Line newState) {
+	public LineModify(DrawingModel model, Line oldState, Line newState, int index, String nameString, SelectedObjects selectedObjects) {
 		this.oldState = oldState;
 		this.newState = newState;
+		this.nameString = nameString;
+		this.model = model;
+		this.index = index;
+		this.selectedObjects = selectedObjects;
 	}
 
 	@Override
@@ -27,6 +37,12 @@ public class LineModify implements Command {
 		oldState.getEndPoint().setX(newState.getEndPoint().getX());
 		oldState.getEndPoint().setY(newState.getEndPoint().getY());
 		oldState.setColor(newState.getColor());
+		
+		
+		selectedObjects.remove(oldState);
+		selectedObjects.add(newState);
+		model.remove(oldState);
+		model.getShapes().add(index, newState);
 	}
 
 	@Override
@@ -38,12 +54,16 @@ public class LineModify implements Command {
 		oldState.getEndPoint().setY(original.getEndPoint().getY());
 		oldState.setColor(original.getColor());
 		
+		
+		selectedObjects.remove(newState);
+		selectedObjects.add(oldState);
+		model.remove(newState);
+		model.getShapes().add(index, oldState);
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return nameString;
 	}
 
 }
