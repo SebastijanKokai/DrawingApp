@@ -397,17 +397,14 @@ public class DrawingFrame extends JFrame implements ActionListener {
 					} else if (filename.substring(filename.lastIndexOf("."), filename.length()).contentEquals(".txt")) {
 
 						try {
-
 							controller.loadOneByOne(fileToLoad);
 
-						} catch (IOException m) { // TODO Auto-generated catch block
+						} catch (IOException m) { 
 							m.printStackTrace();
 						}
 
 					} else {
-
 						JOptionPane.showMessageDialog(null, "The file is not valid");
-
 					}
 				}
 

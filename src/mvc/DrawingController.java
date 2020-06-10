@@ -222,6 +222,7 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 			}
 		}
 		frame.getView().repaint();
+		frame.getBtnNext().setEnabled(false);
 
 	}
 
@@ -238,7 +239,7 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 					if (shape.isSelected()) {
 						int index = model.getShapes().indexOf(shape);
 						CommandRemove cmdRemove = new CommandRemove(model, shape, index,
-								shape.getName() + " - Deleted");
+								shape.getName() + " - Deleted", selectedObjects);
 						selectedObjects.remove(shape);
 						commandManager.execute(cmdRemove);
 
@@ -746,10 +747,12 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 		commandManager.clearReverse();
 		notifyAllObservers(0);
 		frame.getLogArea().setText("");
+		txtFileLines.clear();
 
 		frame.repaint();
 
 		// Counter reset
+		i = 0;
 		pointerCount = 1;
 		lineCount = 1;
 		rectangleCount = 1;
@@ -1161,7 +1164,7 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 			shape = selectedObjects.get(0);
 			if (shape.isSelected()) {
 				int index = model.getShapes().indexOf(shape);
-				CommandRemove cmdRemove = new CommandRemove(model, shape, index, shape.getName() + " - Deleted");
+				CommandRemove cmdRemove = new CommandRemove(model, shape, index, shape.getName() + " - Deleted", selectedObjects);
 				selectedObjects.remove(shape);
 				commandManager.execute(cmdRemove);
 
@@ -1207,9 +1210,3 @@ public class DrawingController extends MouseAdapter implements ActionListener {
 	}
 
 }
-
-// TODO
-
-// Donut gets bugged with Serialization
-// Observer pattern modify
-// Prototype pattern
